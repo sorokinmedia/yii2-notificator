@@ -1,5 +1,5 @@
 {
-    "name": "ma3obblu/yii2-notificator",
+    "name": "sorokinmedia/yii2-notificator",
     "description": "Notificator for Yii2",
     "type": "yii2-extension",
     "keywords": ["yii2", "yii 2", "notification", "telegram", "e-mail"],
@@ -12,8 +12,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/Ma3oBblu/yii2-notificator/issues?state=open",
-        "source": "https://github.com/Ma3oBblu/yii2-notificator"
+        "issues": "https://github.com/sorokinmedia/yii2-notificator/issues?state=open",
+        "source": "https://github.com/sorokinmedia/yii2-notificator"
     },
     "require": {
         "yiisoft/yii2-gii": "~2.0"
@@ -23,8 +23,8 @@
     },
     "autoload": {
         "psr-4": {
-            "ma3obblu\\notificator\\": "src/",
-            "ma3obblu\\notificator\\tests\\": "tests/"
+            "sorokinmedia\\notificator\\": "src/",
+            "sorokinmedia\\notificator\\tests\\": "tests/"
         }
     },
     "extra": {
