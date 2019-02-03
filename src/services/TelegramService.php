@@ -1,0 +1,57 @@
+<?php
+namespace sorokinmedia\notificator\services;
+
+use sorokinmedia\notificator\{BaseOutbox, BaseService, interfaces\RecipientInterface};
+use sorokinmedia\notificator\entities\Outbox\AbstractOutboxTelegram;
+use yii\db\Exception;
+
+/**
+ * Class TelegramService
+ * @package common\components\notificator\services
+ *
+ * @property string $name
+ */
+class TelegramService extends BaseService
+{
+    /**
+     * @return string
+     */
+    public function getName() : string
+    {
+        return 'telegram';
+    }
+
+    /**
+     * @param BaseOutbox $baseOutbox
+     * @return bool
+     * @throws Exception
+     */
+    public function send(BaseOutbox $baseOutbox) : bool
+    {
+        $outbox = AbstractOutboxTelegram::create();
+        $recipients = $baseOutbox->recipients instanceof RecipientInterface ? $baseOutbox->recipients->getAccounts($baseOutbox->type_id) : $baseOutbox->recipients;
+
+        if (!array_key_exists($this->getName(), $recipients)) {
+            return true;
+        }
+
+        // todo: check service/type settings
+        if (!$recipients[$this->getName()]) {
+            return true;
+        }
+
+        /** @var AbstractOutboxTelegram $outbox */
+        $outbox->to_chat = $recipients[$this->getName()];
+        $outbox->to_id = $baseOutbox->toId;
+        $outbox->body = \Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
+            $baseOutbox->messageData,
+            ['outbox' => $outbox]
+        ));
+
+        if (!$outbox->save()) {
+            throw new Exception(\Yii::t('app', 'Ошибка при сохранении в БД'));
+        }
+
+        return $outbox->sendOutbox();
+    }
+}

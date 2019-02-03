@@ -1,7 +1,8 @@
 <?php
+
 namespace sorokinmedia\notificator;
 
-use common\components\events\interfaces\ServiceInterface;
+use sorokinmedia\notificator\interfaces\ServiceInterface;
 use yii\base\Component;
 
 /**
@@ -10,14 +11,14 @@ use yii\base\Component;
  */
 abstract class BaseService extends Component implements ServiceInterface
 {
-    public $viewPath = '@common/components/events/views/';
+    //todo: вынести в конфиг компонента
+    public $viewPath = '@common/components/notificator/views/';
 
     /**
      * @param BaseOutbox $baseOutbox
-     *
      * @return string
      */
-    protected function _getAbsoluteViewPath(BaseOutbox $baseOutbox)
+    protected function _getAbsoluteViewPath(BaseOutbox $baseOutbox): string
     {
         return $this->viewPath . $this->getName() . '/' . $baseOutbox->view;
     }

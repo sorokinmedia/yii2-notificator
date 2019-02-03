@@ -10,13 +10,13 @@ use sorokinmedia\notificator\BaseOutbox;
 interface ServiceInterface
 {
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @param BaseOutbox $baseOutbox
-     * @return mixed
+     * @return bool
      */
-    public function send(BaseOutbox $baseOutbox);
+    public function send(BaseOutbox $baseOutbox): bool;
 }

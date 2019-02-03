@@ -1,17 +1,13 @@
 <?php
 
-namespace common\models;
+namespace sorokinmedia\notificator\entities\Outbox;
 
-use common\components\OXActiveRecordTrait;
-use common\queries\OutboxQuery;
-use Exception;
+use sorokinmedia\ar_relations\RelationInterface;
+use sorokinmedia\notificator\interfaces\OutboxInterface;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
-use yii\db\Expression;
+use yii\db\{ActiveQuery, ActiveRecord};
 use yii\helpers\Json;
-use yii\mail\MailerInterface;
-use yii\mail\MessageInterface;
+use yii\mail\{MailerInterface, MessageInterface};
 
 /**
  * This is the model class for table "outbox".
@@ -19,25 +15,21 @@ use yii\mail\MessageInterface;
  * @property integer $id
  * @property integer $to_id
  * @property string $to_email
- * @property string $bcc_email
  * @property string $from_email
+ * @property string $bcc_email
  * @property string $subject
  * @property string $body
  * @property string $sent
  * @property string $template
- * @property string $created
+ * @property string $created_at
  *
  * @property array $toArray
  * @property array $fromArray
  * @property array $bccArray
  * @property array $toEmailsArray
- *
- * @property Users $toUser
  */
-class OutboxEmail extends ActiveRecord
+abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInterface, OutboxInterface
 {
-    use OXActiveRecordTrait;
-
     /**
      * @return string
      */
@@ -55,14 +47,7 @@ class OutboxEmail extends ActiveRecord
             [['body'], 'string'],
             [['subject'], 'string', 'max' => 2048],
             [['to_email', 'bcc_email', 'from_email'], 'string', 'max' => 512],
-            [
-                ['to_id'],
-                'exist',
-                'skipOnError' => true,
-                'skipOnEmpty' => true,
-                'targetClass' => Users::className(),
-                'targetAttribute' => ['to_id' => 'id']
-            ],
+            [['to_id'], 'integer']
         ];
     }
 
@@ -73,10 +58,9 @@ class OutboxEmail extends ActiveRecord
     {
         return [
             'timestamp' => [
-                'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => 'created',
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => false,
-                'value' => new Expression('NOW()'),
             ],
         ];
     }
@@ -87,30 +71,22 @@ class OutboxEmail extends ActiveRecord
     public function attributeLabels(): array
     {
         return [
-            'id' => 'ID',
-            'to_id' => 'To (id)',
-            'to_email' => 'To (email)',
-            'subject' => 'Subject',
-            'body' => 'Body',
-            'sent' => 'Sent',
-            'template' => 'Template',
+            'id' => \Yii::t('app', 'ID'),
+            'to_id' => \Yii::t('app', 'Адресат'),
+            'to_email' => \Yii::t('app', 'E-mail'),
+            'subject' => \Yii::t('app', 'Тема'),
+            'body' => \Yii::t('app', 'Текст письма'),
+            'sent' => \Yii::t('app', 'Дата отправки'),
+            'template' => \Yii::t('app', 'Шаблон'),
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getToUser(): ActiveQuery
     {
-        return $this->hasOne(Users::className(), ['id' => 'to_id']);
-    }
-
-    /**
-     * @return OutboxQuery
-     */
-    public static function find(): OutboxQuery
-    {
-        return new OutboxQuery(get_called_class());
+        return $this->hasOne($this->__userClass, ['id' => 'to_id']);
     }
 
     /**
@@ -121,7 +97,6 @@ class OutboxEmail extends ActiveRecord
     {
         return $mailer->compose(['html' => '@common/mail/layouts/mail.php', 'text' => '@common/mail/layouts/mail.php'], ['content' => $this->body])
             ->setTo($this->toArray)
-            ->setBcc($this->bccArray)
             ->setFrom($this->fromArray)
             ->setSubject($this->subject);
     }
@@ -136,7 +111,7 @@ class OutboxEmail extends ActiveRecord
         }
         try {
             return Json::decode($this->bcc_email);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return [$this->bcc_email];
         }
     }
@@ -159,7 +134,7 @@ class OutboxEmail extends ActiveRecord
         }
         try {
             return Json::decode($this->from_email);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return [$this->from_email];
         }
     }
@@ -182,7 +157,7 @@ class OutboxEmail extends ActiveRecord
         }
         try {
             return Json::decode($this->to_email);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return [$this->to_email];
         }
     }
@@ -207,5 +182,18 @@ class OutboxEmail extends ActiveRecord
     public function setToArray($to_array): void
     {
         $this->to_email = Json::encode($to_array);
+    }
+
+    /**
+     * @return bool
+     */
+    abstract public function sendOutbox(): bool;
+
+    /**
+     * @return OutboxInterface
+     */
+    public static function create(): OutboxInterface
+    {
+        return new static();
     }
 }

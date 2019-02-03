@@ -1,18 +1,19 @@
 <?php
+
 namespace sorokinmedia\notificator;
 
-//todo: user identity
+use sorokinmedia\notificator\interfaces\RecipientInterface;
 use yii\base\BaseObject;
-use yii\web\User;
 
 /**
  * Class BaseOutbox
- * @package sorokinmedia\notificator
+ * @package common\components\notificator
  *
- * @property User|array $recipients
+ * @property RecipientInterface|array $recipients
  * @property string $view
  * @property array $messageData
  * @property int $toId
+ * @property int $type_id
  */
 class BaseOutbox extends BaseObject
 {
@@ -20,6 +21,7 @@ class BaseOutbox extends BaseObject
     public $view;
     public $messageData;
     public $toId;
+    public $type_id;
 
     /**
      * BaseOutbox constructor.
@@ -28,8 +30,7 @@ class BaseOutbox extends BaseObject
     public function __construct(array $config = [])
     {
         parent::__construct($config);
-
-        if ($this->recipients instanceof Users) {
+        if ($this->recipients instanceof RecipientInterface) {
             $this->toId = $this->recipients->id;
         }
     }
