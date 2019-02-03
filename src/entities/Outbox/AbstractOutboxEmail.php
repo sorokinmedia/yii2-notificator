@@ -19,7 +19,7 @@ use yii\mail\{MailerInterface, MessageInterface};
  * @property string $bcc_email
  * @property string $subject
  * @property string $body
- * @property string $sent
+ * @property string $sent_at
  * @property string $template
  * @property string $created_at
  *
@@ -47,7 +47,8 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
             [['body'], 'string'],
             [['subject'], 'string', 'max' => 2048],
             [['to_email', 'bcc_email', 'from_email'], 'string', 'max' => 512],
-            [['to_id'], 'integer']
+            [['to_id'], 'integer'],
+            [['created_at', 'sent_at'], 'integer'],
         ];
     }
 
@@ -76,7 +77,7 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
             'to_email' => \Yii::t('app', 'E-mail'),
             'subject' => \Yii::t('app', 'Тема'),
             'body' => \Yii::t('app', 'Текст письма'),
-            'sent' => \Yii::t('app', 'Дата отправки'),
+            'sent_at' => \Yii::t('app', 'Дата отправки'),
             'template' => \Yii::t('app', 'Шаблон'),
         ];
     }
@@ -84,10 +85,7 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
     /**
      * @return ActiveQuery
      */
-    public function getToUser(): ActiveQuery
-    {
-        return $this->hasOne($this->__userClass, ['id' => 'to_id']);
-    }
+    abstract public function getToUser(): ActiveQuery;
 
     /**
      * @param MailerInterface $mailer

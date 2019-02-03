@@ -14,7 +14,7 @@ use yii\db\{ActiveQuery, ActiveRecord};
  * @property integer $to_id
  * @property string $to_chat
  * @property string $body
- * @property string $sent
+ * @property string $sent_at
  * @property string $template
  * @property string $created_at
  */
@@ -35,7 +35,7 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
     {
         return [
             [['body'], 'string'],
-            [['created_at', 'sent', 'to_chat', 'to_id'], 'integer'],
+            [['created_at', 'sent_at', 'to_chat', 'to_id'], 'integer'],
             [['body', 'template'], 'string']
         ];
     }
@@ -64,7 +64,7 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
             'to_id' => \Yii::t('app', 'Адресат'),
             'to_chat' => \Yii::t('app', 'ID чата'),
             'body' => \Yii::t('app', 'Текст сообщения'),
-            'sent' => \Yii::t('app', 'Дата отправки'),
+            'sent_at' => \Yii::t('app', 'Дата отправки'),
             'template' => \Yii::t('app', 'Шаблон'),
             'created_at' => \Yii::t('app', 'Дата создания')
         ];
@@ -73,10 +73,7 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
     /**
      * @return ActiveQuery
      */
-    public function getToUser(): ActiveQuery
-    {
-        return $this->hasOne($this->__userClass, ['id' => 'to_id']);
-    }
+    abstract public function getToUser(): ActiveQuery;
 
     /**
      * @return bool

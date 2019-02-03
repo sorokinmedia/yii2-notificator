@@ -10,12 +10,15 @@ use sorokinmedia\notificator\BaseOutbox;
 interface HandlerInterface
 {
     /**
+     * выполнить хендлер
+     * вернет набор аутбоксов для отправки
      * @return BaseOutbox[]
      */
-    public function execute();
+    public function execute(): array;
 
     /**
-     * @return mixed
+     * получить данные необходимые в хендлере
+     * @return array
      */
-    public function getMessageData();
+    public function getMessageData(): array;
 }

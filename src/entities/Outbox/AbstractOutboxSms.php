@@ -15,7 +15,7 @@ use yii\db\{ActiveQuery, ActiveRecord};
  * @property int $status_id
  * @property string $phone
  * @property string $body
- * @property string $sent
+ * @property string $sent_at
  * @property string $created_at
  */
 abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterface, OutboxInterface
@@ -32,14 +32,6 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
     public static function tableName(): string
     {
         return 'outbox_sms';
-    }
-
-    /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
     }
 
     /**
@@ -67,7 +59,7 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
             [['body'], 'string'],
             [['phone'], 'string', 'max' => 15],
             [['status_id'], 'default', 'value' => self::STATUS_NEW],
-            [['created_at', 'sent'], 'safe']
+            [['created_at', 'sent_at'], 'integer']
         ];
     }
 
@@ -82,7 +74,7 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
             'status_id' => \Yii::t('app', 'Статус'),
             'phone' => \Yii::t('app', 'Номер телефона'),
             'body' => \Yii::t('app', 'Текст сообщения'),
-            'sent' => \Yii::t('app', 'Дата отправки'),
+            'sent_at' => \Yii::t('app', 'Дата отправки'),
             'created_at' => \Yii::t('app', 'Дата создания')
         ];
     }
@@ -90,13 +82,18 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
     /**
      * @return ActiveQuery
      */
-    public function getToUser(): ActiveQuery
-    {
-        return $this->hasOne($this->__userClass, ['id' => 'to_id']);
-    }
+    abstract public function getToUser(): ActiveQuery;
 
     /**
      * @return bool
      */
     abstract public function sendOutbox(): bool;
+
+    /**
+     * @return OutboxInterface
+     */
+    public static function create(): OutboxInterface
+    {
+        return new static();
+    }
 }

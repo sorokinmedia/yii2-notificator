@@ -2,13 +2,10 @@
 
 namespace sorokinmedia\notificator\services;
 
-use sorokinmedia\notificator\BaseOutbox;
-use sorokinmedia\notificator\BaseService;
+use sorokinmedia\notificator\{BaseOutbox, BaseService};
 use sorokinmedia\notificator\entities\Outbox\AbstractOutboxSms;
 use sorokinmedia\notificator\interfaces\RecipientInterface;
-use common\models\OutboxSms;
 use yii\db\Exception;
-use console\jobs\SendSmsJob;
 
 /**
  * Class SmsService
@@ -18,14 +15,6 @@ use console\jobs\SendSmsJob;
  */
 class SmsService extends BaseService
 {
-    /**
-     * @return string
-     */
-    public function getName() : string
-    {
-        return 'sms';
-    }
-
     /**
      * @param BaseOutbox $baseOutbox
      * @return bool
@@ -47,7 +36,7 @@ class SmsService extends BaseService
 
         /** @var AbstractOutboxSms $outbox */
         $outbox->phone = $recipients[$this->getName()];
-        $outbox->to_id = $baseOutbox->toId;
+        $outbox->to_id = $baseOutbox->to_id;
         $outbox->body = \Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
             $baseOutbox->messageData,
             ['outbox' => $outbox]
@@ -58,5 +47,13 @@ class SmsService extends BaseService
         }
 
         return $outbox->sendOutbox();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'sms';
     }
 }

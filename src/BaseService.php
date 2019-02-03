@@ -8,11 +8,12 @@ use yii\base\Component;
 /**
  * Class BaseService
  * @package sorokinmedia\notificator
+ *
+ * @property string $viewPath
  */
 abstract class BaseService extends Component implements ServiceInterface
 {
-    //todo: вынести в конфиг компонента
-    public $viewPath = '@common/components/notificator/views/';
+    public $viewPath;
 
     /**
      * @param BaseOutbox $baseOutbox

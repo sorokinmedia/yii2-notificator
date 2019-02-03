@@ -36,7 +36,7 @@ class EmailService extends BaseService
 
         /** @var AbstractOutboxEmail $outbox */
         $outbox->to_email = $recipients[$this->getName()];
-        $outbox->to_id = $baseOutbox->toId;
+        $outbox->to_id = $baseOutbox->to_id;
         $outbox->body = \Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
             $baseOutbox->messageData,
             ['outbox' => $outbox]

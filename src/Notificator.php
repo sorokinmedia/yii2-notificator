@@ -10,11 +10,13 @@ use yii\base\Component;
  * @package sorokinmedia\notificator
  *
  * @property array $services Services configuration
+ * @property string $viewPath Path to views folder
  * @property ServiceInterface[] $_loadedServices
  */
 class Notificator extends Component
 {
     public $services;
+    public $viewPath = '@common/components/notificator/views/';
     private $_loadedServices;
 
     /**
@@ -25,7 +27,9 @@ class Notificator extends Component
     {
         parent::init();
         foreach ($this->services as $name => $class) {
-            $this->_loadedServices[$name] = new $class;
+            $this->_loadedServices[$name] = new $class([
+                'viewPath' => $this->viewPath
+            ]);
         }
     }
 

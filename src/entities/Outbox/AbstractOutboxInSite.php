@@ -13,13 +13,13 @@ use yii\db\{ActiveQuery, ActiveRecord};
  * Class AbstractOutboxInSite
  * @package sorokinmedia\notificator\entities\Outbox
  *
- * @property int $id
- * @property int $to_id
- * @property int $type_id
+ * @property integer $id
+ * @property integer $to_id
+ * @property integer $type_id
  * @property string $body
- * @property string $viewed
+ * @property integer $is_viewed
  * @property string $template
- * @property string $created_at
+ * @property integer $created_at
  */
 abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInterface, OutboxInterface
 {
@@ -28,7 +28,7 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
      */
     public static function tableName(): string
     {
-        return 'outbox_insite';
+        return 'outbox_in_site';
     }
 
     /**
@@ -37,9 +37,8 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
     public function rules(): array
     {
         return [
-            [['body'], 'string'],
-            [['created_at', 'viewed', 'type_id', 'to_id'], 'integer'],
-            [['body', 'template'], 'string']
+            [['body','template'], 'string'],
+            [['created_at', 'is_viewed', 'type_id', 'to_id'], 'integer'],
         ];
     }
 
@@ -68,33 +67,28 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
             'type_id' => \Yii::t('app', 'Тип'),
             'to_email' => \Yii::t('app', 'E-mail адрес'),
             'body' => \Yii::t('app', 'Тело письма'),
-            'sent' => \Yii::t('app', 'Отправлено'),
+            'is_viewed' => \Yii::t('app', 'Просмотрено'),
             'template' => \Yii::t('app', 'Шаблон'),
+            'created_at' => \Yii::t('app', 'Дата создания'),
         ];
     }
 
     /**
      * @return ActiveQuery
      */
-    public function getToUser(): ActiveQuery
-    {
-        return $this->hasOne($this->__userClass, ['id' => 'to_id']);
-    }
+    abstract public function getToUser(): ActiveQuery;
 
     /**
      * @return ActiveQuery
      */
-    public function getType(): ActiveQuery
-    {
-        return $this->hasOne($this->__notificationTypeClass, ['id' => 'type_id']);
-    }
+    abstract public function getType(): ActiveQuery;
 
     /**
      * @return bool
      */
     public function checkViewed(): bool
     {
-        $this->viewed = time();
+        $this->is_viewed = time();
         return $this->save();
     }
 

@@ -1,8 +1,10 @@
 <?php
+
 namespace sorokinmedia\notificator\services;
 
-use sorokinmedia\notificator\{BaseOutbox, BaseService, interfaces\RecipientInterface};
+use sorokinmedia\notificator\{BaseOutbox, BaseService};
 use sorokinmedia\notificator\entities\Outbox\AbstractOutboxTelegram;
+use sorokinmedia\notificator\interfaces\RecipientInterface;
 use yii\db\Exception;
 
 /**
@@ -14,19 +16,11 @@ use yii\db\Exception;
 class TelegramService extends BaseService
 {
     /**
-     * @return string
-     */
-    public function getName() : string
-    {
-        return 'telegram';
-    }
-
-    /**
      * @param BaseOutbox $baseOutbox
      * @return bool
      * @throws Exception
      */
-    public function send(BaseOutbox $baseOutbox) : bool
+    public function send(BaseOutbox $baseOutbox): bool
     {
         $outbox = AbstractOutboxTelegram::create();
         $recipients = $baseOutbox->recipients instanceof RecipientInterface ? $baseOutbox->recipients->getAccounts($baseOutbox->type_id) : $baseOutbox->recipients;
@@ -42,7 +36,7 @@ class TelegramService extends BaseService
 
         /** @var AbstractOutboxTelegram $outbox */
         $outbox->to_chat = $recipients[$this->getName()];
-        $outbox->to_id = $baseOutbox->toId;
+        $outbox->to_id = $baseOutbox->to_id;
         $outbox->body = \Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
             $baseOutbox->messageData,
             ['outbox' => $outbox]
@@ -53,5 +47,13 @@ class TelegramService extends BaseService
         }
 
         return $outbox->sendOutbox();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'telegram';
     }
 }
