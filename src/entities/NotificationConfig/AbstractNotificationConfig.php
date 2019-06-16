@@ -5,6 +5,7 @@ namespace sorokinmedia\notificator\entities\NotificationConfig;
 use sorokinmedia\ar_relations\RelationInterface;
 use sorokinmedia\notificator\entities\NotificationType\{AbstractNotificationType};
 use sorokinmedia\notificator\interfaces\{NotificationConfigInterface, NotificationTypeInterface};
+use Yii;
 use yii\db\{ActiveQuery, ActiveRecord, Exception};
 use yii\web\IdentityInterface;
 
@@ -29,42 +30,6 @@ abstract class AbstractNotificationConfig extends ActiveRecord implements Relati
     }
 
     /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            [['user_id', 'type_id'], 'required'],
-            [['user_id', 'type_id', 'sms', 'telegram', 'email', 'in_site'], 'integer'],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function attributeLabels(): array
-    {
-        return [
-            'user_id' => \Yii::t('app', 'Пользователь'),
-            'type_id' => \Yii::t('app', 'Тип уведомления'),
-            'sms' => \Yii::t('app', 'SMS'),
-            'telegram' => \Yii::t('app', 'Telegram'),
-            'email' => \Yii::t('app', 'E-mail'),
-            'in_site' => \Yii::t('app', 'На сайте'),
-        ];
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    abstract public function getType(): ActiveQuery;
-
-    /**
-     * @return ActiveQuery
-     */
-    abstract public function getUser(): ActiveQuery;
-
-    /**
      * @param IdentityInterface $user
      * @param NotificationTypeInterface $notificationType
      * @return NotificationConfigInterface
@@ -87,7 +52,7 @@ abstract class AbstractNotificationConfig extends ActiveRecord implements Relati
         ]);
         $user_notification->checkBeforeConfigSave();
         if (!$user_notification->save()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при добавлении настройки уведомления пользователю'));
+            throw new Exception(Yii::t('app', 'Ошибка при добавлении настройки уведомления пользователю'));
         }
         return $user_notification;
     }
@@ -95,7 +60,43 @@ abstract class AbstractNotificationConfig extends ActiveRecord implements Relati
     /**
      * @return void
      */
-    abstract public function checkBeforeConfigSave();
+    abstract public function checkBeforeConfigSave(): void;
+
+    /**
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            [['user_id', 'type_id'], 'required'],
+            [['user_id', 'type_id', 'sms', 'telegram', 'email', 'in_site'], 'integer'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'user_id' => Yii::t('app', 'Пользователь'),
+            'type_id' => Yii::t('app', 'Тип уведомления'),
+            'sms' => Yii::t('app', 'SMS'),
+            'telegram' => Yii::t('app', 'Telegram'),
+            'email' => Yii::t('app', 'E-mail'),
+            'in_site' => Yii::t('app', 'На сайте'),
+        ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    abstract public function getType(): ActiveQuery;
+
+    /**
+     * @return ActiveQuery
+     */
+    abstract public function getUser(): ActiveQuery;
 
     /**
      * @param int $in_site
@@ -112,7 +113,7 @@ abstract class AbstractNotificationConfig extends ActiveRecord implements Relati
         $this->sms = $sms;
         $this->telegram = $telegram;
         if (!$this->save()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при обновлении настроек уведомления'));
+            throw new Exception(Yii::t('app', 'Ошибка при обновлении настроек уведомления'));
         }
         return true;
     }

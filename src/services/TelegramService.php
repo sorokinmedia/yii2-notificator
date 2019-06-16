@@ -5,6 +5,7 @@ namespace sorokinmedia\notificator\services;
 use sorokinmedia\notificator\{BaseOutbox, BaseService};
 use sorokinmedia\notificator\entities\Outbox\AbstractOutboxTelegram;
 use sorokinmedia\notificator\interfaces\RecipientInterface;
+use Yii;
 use yii\db\Exception;
 
 /**
@@ -37,13 +38,13 @@ class TelegramService extends BaseService
         /** @var AbstractOutboxTelegram $outbox */
         $outbox->to_chat = $recipients[$this->getName()];
         $outbox->to_id = $baseOutbox->to_id;
-        $outbox->body = \Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
+        $outbox->body = Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
             $baseOutbox->messageData,
             ['outbox' => $outbox]
         ));
 
         if (!$outbox->save()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при сохранении в БД'));
+            throw new Exception(Yii::t('app', 'Ошибка при сохранении в БД'));
         }
 
         return $outbox->sendOutbox();

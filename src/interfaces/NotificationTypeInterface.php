@@ -1,4 +1,5 @@
 <?php
+
 namespace sorokinmedia\notificator\interfaces;
 
 use yii\db\ActiveQuery;
@@ -9,6 +10,19 @@ use yii\db\ActiveQuery;
  */
 interface NotificationTypeInterface
 {
+    /**
+     * вернуть массив типов id=>name
+     * @return array
+     */
+    public static function getTypesArray(): array;
+
+    /**
+     * найди все типы по роли
+     * @param string $role
+     * @return array
+     */
+    public static function findByRole(string $role): array;
+
     /**
      * передать данные из формы в сущность
      * @return void
@@ -56,17 +70,4 @@ interface NotificationTypeInterface
      * @return ActiveQuery
      */
     public function getNotificationConfig(): ActiveQuery;
-
-    /**
-     * вернуть массив типов id=>name
-     * @return array
-     */
-    public static function getTypesArray(): array;
-
-    /**
-     * найди все типы по роли
-     * @param string $role
-     * @return array
-     */
-    public static function findByRole(string $role): array;
 }

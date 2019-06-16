@@ -2,6 +2,8 @@
 
 namespace sorokinmedia\notificator\handlers\NotificationType\actions;
 
+use yii\db\Exception;
+
 /**
  * Class Update
  * @package sorokinmedia\notificator\handlers\NotificationType\actions
@@ -10,7 +12,7 @@ class Update extends AbstractAction
 {
     /**
      * @return bool
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public function execute(): bool
     {

@@ -4,6 +4,7 @@ namespace sorokinmedia\notificator\entities\Outbox;
 
 use sorokinmedia\ar_relations\RelationInterface;
 use sorokinmedia\notificator\interfaces\OutboxInterface;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\{ActiveQuery, ActiveRecord};
 
@@ -26,6 +27,14 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
     public static function tableName(): string
     {
         return 'outbox_telegram';
+    }
+
+    /**
+     * @return OutboxInterface
+     */
+    public static function create(): OutboxInterface
+    {
+        return new static();
     }
 
     /**
@@ -60,13 +69,13 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
     public function attributeLabels(): array
     {
         return [
-            'id' => \Yii::t('app', 'ID'),
-            'to_id' => \Yii::t('app', 'Адресат'),
-            'to_chat' => \Yii::t('app', 'ID чата'),
-            'body' => \Yii::t('app', 'Текст сообщения'),
-            'sent_at' => \Yii::t('app', 'Дата отправки'),
-            'template' => \Yii::t('app', 'Шаблон'),
-            'created_at' => \Yii::t('app', 'Дата создания')
+            'id' => Yii::t('app', 'ID'),
+            'to_id' => Yii::t('app', 'Адресат'),
+            'to_chat' => Yii::t('app', 'ID чата'),
+            'body' => Yii::t('app', 'Текст сообщения'),
+            'sent_at' => Yii::t('app', 'Дата отправки'),
+            'template' => Yii::t('app', 'Шаблон'),
+            'created_at' => Yii::t('app', 'Дата создания')
         ];
     }
 
@@ -79,12 +88,4 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
      * @return bool
      */
     abstract public function sendOutbox(): bool;
-
-    /**
-     * @return OutboxInterface
-     */
-    public static function create() : OutboxInterface
-    {
-        return new static();
-    }
 }

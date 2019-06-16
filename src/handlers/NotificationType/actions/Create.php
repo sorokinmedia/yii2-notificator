@@ -2,6 +2,9 @@
 
 namespace sorokinmedia\notificator\handlers\NotificationType\actions;
 
+use Throwable;
+use yii\db\Exception;
+
 /**
  * Class Create
  * @package sorokinmedia\notificator\handlers\NotificationType\actions
@@ -10,8 +13,8 @@ class Create extends AbstractAction
 {
     /**
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function execute(): bool
     {

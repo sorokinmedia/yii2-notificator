@@ -2,19 +2,19 @@
 
 namespace sorokinmedia\notificator\services;
 
-use sorokinmedia\notificator\{BaseOutbox,
-    BaseService};
+use sorokinmedia\notificator\{BaseOutbox, BaseService};
 use sorokinmedia\notificator\entities\Outbox\AbstractOutboxInSite;
 use sorokinmedia\notificator\interfaces\RecipientInterface;
+use Yii;
 use yii\db\Exception;
 
 /**
- * Class InsiteService
+ * Class InSiteService
  * @package common\components\notificator\services
  *
  * @property string $name
  */
-class InsiteService extends BaseService
+class InSiteService extends BaseService
 {
     /**
      * @param BaseOutbox $baseOutbox
@@ -37,14 +37,14 @@ class InsiteService extends BaseService
 
         /** @var AbstractOutboxInSite $outbox */
         $outbox->to_id = $baseOutbox->to_id;
-        $outbox->body = \Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
+        $outbox->body = Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
             $baseOutbox->messageData,
             ['outbox' => $outbox]
         ));
         $outbox->type_id = $baseOutbox->type_id;
 
         if (!$outbox->save()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при сохранении в БД'));
+            throw new Exception(Yii::t('app', 'Ошибка при сохранении в БД'));
         }
         return $outbox->sendOutbox();
     }
@@ -54,6 +54,6 @@ class InsiteService extends BaseService
      */
     public function getName(): string
     {
-        return 'insite';
+        return 'in_site';
     }
 }

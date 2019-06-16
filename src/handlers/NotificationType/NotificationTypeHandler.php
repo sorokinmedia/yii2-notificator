@@ -4,6 +4,9 @@ namespace sorokinmedia\notificator\handlers\NotificationType;
 
 use sorokinmedia\notificator\entities\NotificationType\AbstractNotificationType;
 use sorokinmedia\notificator\handlers\NotificationType\interfaces\{Create, Delete, Update};
+use Throwable;
+use yii\db\Exception;
+use yii\db\StaleObjectException;
 
 
 /**
@@ -28,8 +31,8 @@ class NotificationTypeHandler implements Create, Update, Delete
 
     /**
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function create(): bool
     {
@@ -38,7 +41,7 @@ class NotificationTypeHandler implements Create, Update, Delete
 
     /**
      * @return bool
-     * @throws \yii\db\Exception
+     * @throws Exception
      */
     public function update(): bool
     {
@@ -47,9 +50,9 @@ class NotificationTypeHandler implements Create, Update, Delete
 
     /**
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\Exception
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws Exception
+     * @throws StaleObjectException
      */
     public function delete(): bool
     {

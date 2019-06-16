@@ -4,6 +4,7 @@ namespace sorokinmedia\notificator\entities\Outbox;
 
 use sorokinmedia\ar_relations\RelationInterface;
 use sorokinmedia\notificator\interfaces\OutboxInterface;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\{ActiveQuery, ActiveRecord};
 
@@ -32,12 +33,20 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
     }
 
     /**
+     * @return OutboxInterface
+     */
+    public static function create(): OutboxInterface
+    {
+        return new static();
+    }
+
+    /**
      * @return array
      */
     public function rules(): array
     {
         return [
-            [['body','template'], 'string'],
+            [['body', 'template'], 'string'],
             [['created_at', 'is_viewed', 'type_id', 'to_id'], 'integer'],
         ];
     }
@@ -62,14 +71,14 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
     public function attributeLabels(): array
     {
         return [
-            'id' => \Yii::t('app', 'ID'),
-            'to_id' => \Yii::t('app', 'Адресат'),
-            'type_id' => \Yii::t('app', 'Тип'),
-            'to_email' => \Yii::t('app', 'E-mail адрес'),
-            'body' => \Yii::t('app', 'Тело письма'),
-            'is_viewed' => \Yii::t('app', 'Просмотрено'),
-            'template' => \Yii::t('app', 'Шаблон'),
-            'created_at' => \Yii::t('app', 'Дата создания'),
+            'id' => Yii::t('app', 'ID'),
+            'to_id' => Yii::t('app', 'Адресат'),
+            'type_id' => Yii::t('app', 'Тип'),
+            'to_email' => Yii::t('app', 'E-mail адрес'),
+            'body' => Yii::t('app', 'Тело письма'),
+            'is_viewed' => Yii::t('app', 'Просмотрено'),
+            'template' => Yii::t('app', 'Шаблон'),
+            'created_at' => Yii::t('app', 'Дата создания'),
         ];
     }
 
@@ -90,14 +99,6 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
     {
         $this->is_viewed = time();
         return $this->save();
-    }
-
-    /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
     }
 
     /**

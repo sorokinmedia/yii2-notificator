@@ -2,8 +2,10 @@
 
 namespace sorokinmedia\notificator\entities\Outbox;
 
+use Exception;
 use sorokinmedia\ar_relations\RelationInterface;
 use sorokinmedia\notificator\interfaces\OutboxInterface;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\{ActiveQuery, ActiveRecord};
 use yii\helpers\Json;
@@ -36,6 +38,14 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
     public static function tableName(): string
     {
         return 'outbox_email';
+    }
+
+    /**
+     * @return OutboxInterface
+     */
+    public static function create(): OutboxInterface
+    {
+        return new static();
     }
 
     /**
@@ -72,13 +82,13 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
     public function attributeLabels(): array
     {
         return [
-            'id' => \Yii::t('app', 'ID'),
-            'to_id' => \Yii::t('app', 'Адресат'),
-            'to_email' => \Yii::t('app', 'E-mail'),
-            'subject' => \Yii::t('app', 'Тема'),
-            'body' => \Yii::t('app', 'Текст письма'),
-            'sent_at' => \Yii::t('app', 'Дата отправки'),
-            'template' => \Yii::t('app', 'Шаблон'),
+            'id' => Yii::t('app', 'ID'),
+            'to_id' => Yii::t('app', 'Адресат'),
+            'to_email' => Yii::t('app', 'E-mail'),
+            'subject' => Yii::t('app', 'Тема'),
+            'body' => Yii::t('app', 'Текст письма'),
+            'sent_at' => Yii::t('app', 'Дата отправки'),
+            'template' => Yii::t('app', 'Шаблон'),
         ];
     }
 
@@ -109,7 +119,7 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
         }
         try {
             return Json::decode($this->bcc_email);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [$this->bcc_email];
         }
     }
@@ -132,7 +142,7 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
         }
         try {
             return Json::decode($this->from_email);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [$this->from_email];
         }
     }
@@ -155,7 +165,7 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
         }
         try {
             return Json::decode($this->to_email);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return [$this->to_email];
         }
     }
@@ -186,12 +196,4 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
      * @return bool
      */
     abstract public function sendOutbox(): bool;
-
-    /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
-    }
 }

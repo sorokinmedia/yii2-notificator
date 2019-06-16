@@ -1,4 +1,5 @@
 <?php
+
 namespace sorokinmedia\notificator\interfaces;
 
 /**

@@ -23,7 +23,7 @@ class Notificator extends Component
      * Services Initialization
      * @return void
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         foreach ($this->services as $name => $class) {
@@ -37,7 +37,7 @@ class Notificator extends Component
      * @param HandlerInterface $handler
      * @return void
      */
-    public function send(HandlerInterface $handler)
+    public function send(HandlerInterface $handler): void
     {
         $outboxes = $handler->execute();
         foreach ($this->_loadedServices as $service) {

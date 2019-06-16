@@ -1,4 +1,5 @@
 <?php
+
 namespace sorokinmedia\notificator\interfaces;
 
 use yii\db\ActiveQuery;
@@ -10,6 +11,14 @@ use yii\web\IdentityInterface;
  */
 interface NotificationConfigInterface
 {
+    /**
+     * статический конструктор
+     * @param IdentityInterface $user
+     * @param NotificationTypeInterface $notificationType
+     * @return NotificationConfigInterface
+     */
+    public static function create(IdentityInterface $user, NotificationTypeInterface $notificationType): self;
+
     /**
      * получить тип уведомления
      * @return ActiveQuery
@@ -23,18 +32,10 @@ interface NotificationConfigInterface
     public function getUser(): ActiveQuery;
 
     /**
-     * статический конструктор
-     * @param IdentityInterface $user
-     * @param NotificationTypeInterface $notificationType
-     * @return NotificationConfigInterface
-     */
-    public static function create(IdentityInterface $user, NotificationTypeInterface $notificationType): self;
-
-    /**
      * проверки перед сохранением конфига
      * @return void
      */
-    public function checkBeforeConfigSave();
+    public function checkBeforeConfigSave(): void;
 
     /**
      * обновление конфига

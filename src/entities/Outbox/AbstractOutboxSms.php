@@ -4,6 +4,7 @@ namespace sorokinmedia\notificator\entities\Outbox;
 
 use sorokinmedia\ar_relations\RelationInterface;
 use sorokinmedia\notificator\interfaces\OutboxInterface;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\{ActiveQuery, ActiveRecord};
 
@@ -20,11 +21,11 @@ use yii\db\{ActiveQuery, ActiveRecord};
  */
 abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterface, OutboxInterface
 {
-    const STATUS_NEW = 1;
-    const STATUS_SEND = 2;
-    const STATUS_DELIVERED = 3;
-    const STATUS_ANSWERED = 4;
-    const STATUS_FAILED = 5;
+    public const STATUS_NEW = 1;
+    public const STATUS_SEND = 2;
+    public const STATUS_DELIVERED = 3;
+    public const STATUS_ANSWERED = 4;
+    public const STATUS_FAILED = 5;
 
     /**
      * @return string
@@ -32,6 +33,14 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
     public static function tableName(): string
     {
         return 'outbox_sms';
+    }
+
+    /**
+     * @return OutboxInterface
+     */
+    public static function create(): OutboxInterface
+    {
+        return new static();
     }
 
     /**
@@ -69,13 +78,13 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
     public function attributeLabels(): array
     {
         return [
-            'id' => \Yii::t('app', 'ID'),
-            'to_id' => \Yii::t('app', 'Получатель'),
-            'status_id' => \Yii::t('app', 'Статус'),
-            'phone' => \Yii::t('app', 'Номер телефона'),
-            'body' => \Yii::t('app', 'Текст сообщения'),
-            'sent_at' => \Yii::t('app', 'Дата отправки'),
-            'created_at' => \Yii::t('app', 'Дата создания')
+            'id' => Yii::t('app', 'ID'),
+            'to_id' => Yii::t('app', 'Получатель'),
+            'status_id' => Yii::t('app', 'Статус'),
+            'phone' => Yii::t('app', 'Номер телефона'),
+            'body' => Yii::t('app', 'Текст сообщения'),
+            'sent_at' => Yii::t('app', 'Дата отправки'),
+            'created_at' => Yii::t('app', 'Дата создания')
         ];
     }
 
@@ -88,12 +97,4 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
      * @return bool
      */
     abstract public function sendOutbox(): bool;
-
-    /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
-    }
 }

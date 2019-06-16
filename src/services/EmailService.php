@@ -5,6 +5,7 @@ namespace sorokinmedia\notificator\services;
 use sorokinmedia\notificator\{BaseOutbox, BaseService};
 use sorokinmedia\notificator\entities\Outbox\AbstractOutboxEmail;
 use sorokinmedia\notificator\interfaces\RecipientInterface;
+use Yii;
 use yii\db\Exception;
 
 /**
@@ -37,14 +38,14 @@ class EmailService extends BaseService
         /** @var AbstractOutboxEmail $outbox */
         $outbox->to_email = $recipients[$this->getName()];
         $outbox->to_id = $baseOutbox->to_id;
-        $outbox->body = \Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
+        $outbox->body = Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
             $baseOutbox->messageData,
             ['outbox' => $outbox]
         ));
-        $outbox->from_email = \Yii::$app->params['robotEmail'];
+        $outbox->from_email = Yii::$app->params['robotEmail'];
 
         if (!$outbox->save()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при сохранении в БД'));
+            throw new Exception(Yii::t('app', 'Ошибка при сохранении в БД'));
         }
 
         return $outbox->sendOutbox();

@@ -4,6 +4,7 @@ namespace sorokinmedia\notificator\entities\NotificationType;
 
 use sorokinmedia\ar_relations\RelationInterface;
 use sorokinmedia\notificator\forms\NotificationTypeForm;
+use sorokinmedia\notificator\interfaces\NotificationTypeInterface;
 use yii\db\{ActiveQuery, ActiveRecord, Exception};
 
 /**

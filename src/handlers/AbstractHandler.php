@@ -1,4 +1,5 @@
 <?php
+
 namespace sorokinmedia\notificator\handlers;
 
 use sorokinmedia\notificator\BaseOutbox;

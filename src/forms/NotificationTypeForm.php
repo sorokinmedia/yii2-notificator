@@ -3,6 +3,7 @@
 namespace sorokinmedia\notificator\forms;
 
 use sorokinmedia\notificator\entities\NotificationType\AbstractNotificationType;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -63,12 +64,12 @@ class NotificationTypeForm extends Model
     public function attributeLabels(): array
     {
         return [
-            'name' => \Yii::t('app', 'Название'),
-            'role' => \Yii::t('app', 'Роль'),
-            'sms' => \Yii::t('app', 'SMS'),
-            'email' => \Yii::t('app', 'E-mail'),
-            'telegram' => \Yii::t('app', 'Telegram'),
-            'in_site' => \Yii::t('app', 'На сайте')
+            'name' => Yii::t('app', 'Название'),
+            'role' => Yii::t('app', 'Роль'),
+            'sms' => Yii::t('app', 'SMS'),
+            'email' => Yii::t('app', 'E-mail'),
+            'telegram' => Yii::t('app', 'Telegram'),
+            'in_site' => Yii::t('app', 'На сайте')
         ];
     }
 }
