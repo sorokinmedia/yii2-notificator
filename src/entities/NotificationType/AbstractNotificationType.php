@@ -5,7 +5,9 @@ namespace sorokinmedia\notificator\entities\NotificationType;
 use sorokinmedia\ar_relations\RelationInterface;
 use sorokinmedia\notificator\forms\NotificationTypeForm;
 use sorokinmedia\notificator\interfaces\NotificationTypeInterface;
-use yii\db\{ActiveQuery, ActiveRecord, Exception};
+use Throwable;
+use Yii;
+use yii\db\{ActiveQuery, ActiveRecord, Exception, StaleObjectException};
 
 /**
  * This is the model class for table "notification_type".
@@ -23,49 +25,6 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
     public $form;
 
     /**
-     * @return string
-     */
-    public static function tableName(): string
-    {
-        return 'notification_type';
-    }
-
-    /**
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-            [['name', 'role'], 'required'],
-            [['sms', 'telegram', 'email', 'in_site'], 'integer'],
-            [['name', 'role'], 'string'],
-            [['email', 'in_site'], 'default', 'value' => 1],
-            [['sms', 'telegram'], 'default', 'value' => 0]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels(): array
-    {
-        return [
-            'id' => \Yii::t('app', 'ID'),
-            'name' => \Yii::t('app', 'Название'),
-            'role' => \Yii::t('app', 'Роль'),
-            'sms' => \Yii::t('app', 'SMS'),
-            'email' => \Yii::t('app', 'E-mail'),
-            'telegram' => \Yii::t('app', 'Telegram'),
-            'in_site' => \Yii::t('app', 'На сайте')
-        ];
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    abstract public function getNotificationConfig(): ActiveQuery;
-
-    /**
      * AbstractNotificationType constructor.
      * @param array $config
      * @param NotificationTypeForm|null $form
@@ -79,85 +38,12 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
     }
 
     /**
-     * трансфер данных из формы
+     * @return string
      */
-    public function getFromForm()
+    public static function tableName(): string
     {
-        if ($this->form !== null) {
-            $this->name = $this->form->name;
-            $this->role = $this->form->role;
-            $this->sms = $this->form->sms;
-            $this->telegram = $this->form->telegram;
-            $this->email = $this->form->email;
-            $this->in_site = $this->form->in_site;
-        }
+        return 'notification_type';
     }
-
-    /**
-     * @return bool
-     * @throws Exception
-     * @throws \Throwable
-     */
-    public function insertModel(): bool
-    {
-        $this->getFromForm();
-        if (!$this->insert()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при добавлении нового типа уведомления в БД'));
-        }
-        $this->refresh();
-        $this->afterInsertModel();
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    abstract public function afterInsertModel(): bool;
-
-    /**
-     * @return bool
-     * @throws Exception
-     */
-    public function updateModel(): bool
-    {
-        $role_update = false;
-        if ($this->role !== $this->form->role) {
-            $role_update = true;
-        }
-        $this->getFromForm();
-        if (!$this->save()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при сохранении типа уведомления в БД'));
-        }
-        if ($role_update) { // если сменилась роль
-            $this->afterRoleUpdate();
-        }
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    abstract public function afterRoleUpdate(): bool;
-
-    /**
-     * @return bool
-     * @throws Exception
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function deleteModel(): bool
-    {
-        $this->beforeDeleteModel();
-        if (!$this->delete()) {
-            throw new Exception(\Yii::t('app', 'Ошибка при удалении типа уведомления из БД'));
-        }
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    abstract public function beforeDeleteModel(): bool;
 
     /**
      * получаем дефолтный набор для роли
@@ -180,4 +66,120 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
             ->orderBy(['name' => SORT_ASC])
             ->column();
     }
+
+    /**
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+            [['name', 'role'], 'required'],
+            [['sms', 'telegram', 'email', 'in_site'], 'integer'],
+            [['name', 'role'], 'string'],
+            [['email', 'in_site'], 'default', 'value' => 1],
+            [['sms', 'telegram'], 'default', 'value' => 0]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => Yii::t('app', 'ID'),
+            'name' => Yii::t('app', 'Название'),
+            'role' => Yii::t('app', 'Роль'),
+            'sms' => Yii::t('app', 'SMS'),
+            'email' => Yii::t('app', 'E-mail'),
+            'telegram' => Yii::t('app', 'Telegram'),
+            'in_site' => Yii::t('app', 'На сайте')
+        ];
+    }
+
+    /**
+     * @return ActiveQuery
+     */
+    abstract public function getNotificationConfigs(): ActiveQuery;
+
+    /**
+     * @return bool
+     * @throws Exception
+     * @throws Throwable
+     */
+    public function insertModel(): bool
+    {
+        $this->getFromForm();
+        if (!$this->insert()) {
+            throw new Exception(Yii::t('app', 'Ошибка при добавлении нового типа уведомления в БД'));
+        }
+        $this->refresh();
+        $this->afterInsertModel();
+        return true;
+    }
+
+    /**
+     * трансфер данных из формы
+     */
+    public function getFromForm(): void
+    {
+        if ($this->form !== null) {
+            $this->name = $this->form->name;
+            $this->role = $this->form->role;
+            $this->sms = $this->form->sms;
+            $this->telegram = $this->form->telegram;
+            $this->email = $this->form->email;
+            $this->in_site = $this->form->in_site;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    abstract public function afterInsertModel(): bool;
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function updateModel(): bool
+    {
+        $role_update = false;
+        if ($this->role !== $this->form->role) {
+            $role_update = true;
+        }
+        $this->getFromForm();
+        if (!$this->save()) {
+            throw new Exception(Yii::t('app', 'Ошибка при сохранении типа уведомления в БД'));
+        }
+        if ($role_update) { // если сменилась роль
+            $this->afterRoleUpdate();
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    abstract public function afterRoleUpdate(): bool;
+
+    /**
+     * @return bool
+     * @throws Exception
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
+    public function deleteModel(): bool
+    {
+        $this->beforeDeleteModel();
+        if (!$this->delete()) {
+            throw new Exception(Yii::t('app', 'Ошибка при удалении типа уведомления из БД'));
+        }
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    abstract public function beforeDeleteModel(): bool;
 }

@@ -27,7 +27,7 @@ interface NotificationTypeInterface
      * передать данные из формы в сущность
      * @return void
      */
-    public function getFromForm();
+    public function getFromForm(): void;
 
     /**
      * добавление в БД
@@ -66,8 +66,8 @@ interface NotificationTypeInterface
     public function beforeDeleteModel(): bool;
 
     /**
-     * получить конфиг пользователя для данного типа уведомлений
+     * получить конфиги пользователя для данного типа уведомлений
      * @return ActiveQuery
      */
-    public function getNotificationConfig(): ActiveQuery;
+    public function getNotificationConfigs(): ActiveQuery;
 }
