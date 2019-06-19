@@ -50,7 +50,10 @@ class EmailService extends BaseService
         if (!$outbox->save()) {
             throw new Exception(Yii::t('app', 'Ошибка при сохранении в БД'));
         }
-        return $outbox->sendOutbox();
+        if ($outbox->isImmediate()){
+            return $outbox->sendOutbox();
+        }
+        return true;
     }
 
     /**
