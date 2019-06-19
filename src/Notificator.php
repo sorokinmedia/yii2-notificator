@@ -49,6 +49,9 @@ class Notificator extends Component
         }
     }
 
+    /**
+     * @param HandlerInterface $handler
+     */
     public function sendGroup(HandlerInterface $handler): void
     {
         $outboxes = $handler->execute();
@@ -56,7 +59,7 @@ class Notificator extends Component
             /** @var ServiceInterface $service */
             if ($service->isGroup() === true){
                 foreach ($outboxes as $baseOutbox){
-                    $service->send($baseOutbox);
+                    $service->sendGroup($baseOutbox);
                 }
             }
         }

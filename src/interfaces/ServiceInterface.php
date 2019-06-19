@@ -23,10 +23,9 @@ interface ServiceInterface
 
     /**
      * @param BaseOutbox $baseOutbox
-     * @param string $accumulated_text
      * @return bool
      */
-    public function sendGroup(BaseOutbox $baseOutbox, string $accumulated_text): bool;
+    public function sendGroup(BaseOutbox $baseOutbox): bool;
     
     /**
      * Включена ли групповая рассылка через данный сервис

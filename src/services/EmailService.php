@@ -59,10 +59,9 @@ class EmailService extends BaseService
 
     /**
      * @param BaseOutbox $baseOutbox
-     * @param string $accumulated_text
      * @return bool
      */
-    public function sendGroup(BaseOutbox $baseOutbox, string $accumulated_text): bool
+    public function sendGroup(BaseOutbox $baseOutbox): bool
     {
         $outbox = AbstractOutboxEmail::create();
         $recipients = $baseOutbox->recipients instanceof RecipientInterface ? $baseOutbox->recipients->getAccounts($baseOutbox->type_id) : $baseOutbox->recipients;
@@ -79,7 +78,10 @@ class EmailService extends BaseService
         /** @var AbstractOutboxEmail $outbox */
         $outbox->to_email = $recipients[$this->getName()];
         $outbox->to_id = $baseOutbox->to_id;
-        $outbox->body = $accumulated_text;
+        $outbox->body = Yii::$app->view->render($this->_getAbsoluteViewPath($baseOutbox), array_merge(
+            $baseOutbox->messageData,
+            ['outbox' => $outbox]
+        ));
         $outbox->from_email = Yii::$app->params['robotEmail'];
         $outbox->status_id = AbstractOutboxEmail::STATUS_SINGLE;
         $outbox->type_id = $baseOutbox->type_id;
