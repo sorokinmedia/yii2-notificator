@@ -16,6 +16,7 @@ use yii\mail\{MailerInterface, MessageInterface};
  *
  * @property integer $id
  * @property integer $to_id
+ * @property integer $status_id
  * @property string $to_email
  * @property string $from_email
  * @property string $bcc_email
@@ -32,6 +33,10 @@ use yii\mail\{MailerInterface, MessageInterface};
  */
 abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInterface, OutboxInterface
 {
+    public const STATUS_SINGLE = 1;
+    public const STATUS_GROUP = 2;
+    public const STATUS_SEND = 3;
+
     /**
      * @return string
      */
@@ -58,6 +63,7 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
             [['subject'], 'string', 'max' => 2048],
             [['to_email', 'bcc_email', 'from_email'], 'string', 'max' => 512],
             [['to_id'], 'integer'],
+            [['status_id'], 'default', 'value' => self::STATUS_SINGLE],
             [['created_at', 'sent_at'], 'integer'],
         ];
     }
@@ -84,6 +90,7 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
         return [
             'id' => Yii::t('app', 'ID'),
             'to_id' => Yii::t('app', 'Адресат'),
+            'status_id' => Yii::t('app', 'Статус'),
             'to_email' => Yii::t('app', 'E-mail'),
             'subject' => Yii::t('app', 'Тема'),
             'body' => Yii::t('app', 'Текст письма'),
@@ -196,4 +203,10 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
      * @return bool
      */
     abstract public function sendOutbox(): bool;
+
+    /**
+     * нужно ли отправлять уведомление сразу или можно отложить до групповой отправки
+     * @return bool
+     */
+    abstract public function isImmediate(): bool;
 }
