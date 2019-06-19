@@ -44,6 +44,7 @@ class EmailService extends BaseService
         ));
         $outbox->from_email = Yii::$app->params['robotEmail'];
         $outbox->status_id = AbstractOutboxEmail::STATUS_SINGLE;
+        $outbox->type_id = $baseOutbox->type_id;
         if (!$outbox->isImmediate()){
             $outbox->status_id = AbstractOutboxEmail::STATUS_GROUP;
         }
