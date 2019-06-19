@@ -97,4 +97,17 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
      * @return bool
      */
     abstract public function sendOutbox(): bool;
+
+    /**
+     * @return bool
+     */
+    abstract public function sendGroupOutbox(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isImmediate(): bool
+    {
+        return true;
+    }
 }

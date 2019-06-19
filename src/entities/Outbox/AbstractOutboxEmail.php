@@ -207,6 +207,11 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
     abstract public function sendOutbox(): bool;
 
     /**
+     * @return bool
+     */
+    abstract public function sendGroupOutbox(): bool;
+
+    /**
      * нужно ли отправлять уведомление сразу или можно отложить до групповой отправки
      * @return bool
      */

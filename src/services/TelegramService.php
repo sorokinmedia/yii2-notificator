@@ -57,4 +57,22 @@ class TelegramService extends BaseService
     {
         return 'telegram';
     }
+
+    /**
+     * @return bool
+     */
+    public function isGroup(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @param BaseOutbox $baseOutbox
+     * @param string $accumulated_text
+     * @return bool
+     */
+    public function sendGroup(BaseOutbox $baseOutbox, string $accumulated_text): bool
+    {
+        return true;
+    }
 }

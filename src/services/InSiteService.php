@@ -56,4 +56,22 @@ class InSiteService extends BaseService
     {
         return 'in_site';
     }
+
+    /**
+     * @param BaseOutbox $baseOutbox
+     * @param string $accumulated_text
+     * @return bool
+     */
+    public function sendGroup(BaseOutbox $baseOutbox, string $accumulated_text): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGroup(): bool
+    {
+        return false;
+    }
 }

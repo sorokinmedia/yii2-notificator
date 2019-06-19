@@ -16,6 +16,7 @@ use yii\base\Component;
 class Notificator extends Component
 {
     public $services;
+    public $group_services;
     public $viewPath = '@common/components/notificator/views/';
     private $_loadedServices;
 
@@ -44,6 +45,19 @@ class Notificator extends Component
             /** @var ServiceInterface $service */
             foreach ($outboxes as $baseOutbox) {
                 $service->send($baseOutbox);
+            }
+        }
+    }
+
+    public function sendGroup(HandlerInterface $handler): void
+    {
+        $outboxes = $handler->execute();
+        foreach ($this->_loadedServices as $service){
+            /** @var ServiceInterface $service */
+            if ($service->isGroup() === true){
+                foreach ($outboxes as $baseOutbox){
+                    $service->send($baseOutbox);
+                }
             }
         }
     }

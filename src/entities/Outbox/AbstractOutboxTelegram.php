@@ -88,4 +88,17 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
      * @return bool
      */
     abstract public function sendOutbox(): bool;
+
+    /**
+     * @return bool
+     */
+    abstract public function sendGroupOutbox(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isImmediate(): bool
+    {
+        return true;
+    }
 }

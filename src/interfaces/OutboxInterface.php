@@ -21,7 +21,17 @@ interface OutboxInterface
     public function sendOutbox(): bool;
 
     /**
+     * @return bool
+     */
+    public function sendGroupOutbox(): bool;
+
+    /**
      * @return ActiveQuery
      */
     public function getToUser(): ActiveQuery;
+
+    /**
+     * @return bool
+     */
+    public function isImmediate(): bool;
 }
