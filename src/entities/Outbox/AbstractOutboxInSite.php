@@ -90,7 +90,7 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
      */
     public function checkViewed(): bool
     {
-        $this->is_viewed = time();
+        $this->is_viewed = 1;
         return $this->save();
     }
 
