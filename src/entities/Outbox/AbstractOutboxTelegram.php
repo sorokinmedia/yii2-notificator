@@ -30,14 +30,6 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
     }
 
     /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
-    }
-
-    /**
      * @return array
      */
     public function rules(): array

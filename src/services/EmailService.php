@@ -18,6 +18,7 @@ class EmailService extends BaseService
 {
     /**
      * @param BaseOutbox $baseOutbox
+     * @param string $class
      * @return bool
      * @throws Exception
      */
@@ -59,11 +60,12 @@ class EmailService extends BaseService
 
     /**
      * @param BaseOutbox $baseOutbox
+     * @param string $class
      * @return bool
      */
-    public function sendGroup(BaseOutbox $baseOutbox): bool
+    public function sendGroup(BaseOutbox $baseOutbox, string $class): bool
     {
-        $outbox = AbstractOutboxEmail::create();
+        $outbox = new $class;
         $recipients = $baseOutbox->recipients instanceof RecipientInterface ? $baseOutbox->recipients->getAccounts($baseOutbox->type_id) : $baseOutbox->recipients;
 
         if (!array_key_exists($this->getName(), $recipients)) {

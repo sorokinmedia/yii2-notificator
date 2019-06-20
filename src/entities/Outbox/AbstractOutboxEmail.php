@@ -47,14 +47,6 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
     }
 
     /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
-    }
-
-    /**
      * @return array
      */
     public function rules(): array

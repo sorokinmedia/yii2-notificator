@@ -64,7 +64,7 @@ class Notificator extends Component
             /** @var ServiceInterface $service */
             if ($service->isGroup() === true){
                 foreach ($outboxes as $baseOutbox){
-                    $service->sendGroup($baseOutbox);
+                    $service->sendGroup($baseOutbox, $this->_loadedOutboxes[$service->getName()]);
                 }
             }
         }

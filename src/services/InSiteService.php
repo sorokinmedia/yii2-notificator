@@ -18,6 +18,7 @@ class InSiteService extends BaseService
 {
     /**
      * @param BaseOutbox $baseOutbox
+     * @param string $class
      * @return bool
      * @throws Exception
      */
@@ -59,9 +60,10 @@ class InSiteService extends BaseService
 
     /**
      * @param BaseOutbox $baseOutbox
+     * @param string $class
      * @return bool
      */
-    public function sendGroup(BaseOutbox $baseOutbox): bool
+    public function sendGroup(BaseOutbox $baseOutbox, string $class): bool
     {
         return true;
     }

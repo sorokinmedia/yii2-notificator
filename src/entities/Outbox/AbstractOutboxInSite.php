@@ -33,14 +33,6 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
     }
 
     /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
-    }
-
-    /**
      * @return array
      */
     public function rules(): array

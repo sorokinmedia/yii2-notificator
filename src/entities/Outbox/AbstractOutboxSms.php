@@ -36,14 +36,6 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
     }
 
     /**
-     * @return OutboxInterface
-     */
-    public static function create(): OutboxInterface
-    {
-        return new static();
-    }
-
-    /**
      * @return array
      */
     public function behaviors(): array
