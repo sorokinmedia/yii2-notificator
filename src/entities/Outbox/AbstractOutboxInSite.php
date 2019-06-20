@@ -40,6 +40,7 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
         return [
             [['body', 'template'], 'string'],
             [['created_at', 'is_viewed', 'type_id', 'to_id'], 'integer'],
+            [['is_viewed'], 'default', 'value' => 0]
         ];
     }
 
