@@ -35,7 +35,7 @@ class Notificator extends Component
             ]);
         }
         foreach ($this->outboxes as $name => $class) {
-            $this->_loadedOutboxes[$name] = new $class();
+            $this->_loadedOutboxes[$name] = $class;
         }
     }
 
