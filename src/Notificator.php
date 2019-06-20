@@ -2,7 +2,7 @@
 
 namespace sorokinmedia\notificator;
 
-use sorokinmedia\notificator\interfaces\{HandlerInterface, ServiceInterface};
+use sorokinmedia\notificator\interfaces\{HandlerInterface, OutboxInterface, ServiceInterface};
 use yii\base\Component;
 
 /**
@@ -12,13 +12,15 @@ use yii\base\Component;
  * @property array $services Services configuration
  * @property string $viewPath Path to views folder
  * @property ServiceInterface[] $_loadedServices
+ * @property OutboxInterface[] $_loadedOutboxes
  */
 class Notificator extends Component
 {
     public $services;
-    public $group_services;
+    public $outboxes;
     public $viewPath = '@common/components/notificator/views/';
     private $_loadedServices;
+    private $_loadedOutboxes;
 
     /**
      * Services Initialization
@@ -32,6 +34,9 @@ class Notificator extends Component
                 'viewPath' => $this->viewPath
             ]);
         }
+        foreach ($this->outboxes as $name => $class) {
+            $this->_loadedOutboxes[$name] = new $class();
+        }
     }
 
     /**
@@ -44,7 +49,7 @@ class Notificator extends Component
         foreach ($this->_loadedServices as $service) {
             /** @var ServiceInterface $service */
             foreach ($outboxes as $baseOutbox) {
-                $service->send($baseOutbox);
+                $service->send($baseOutbox, $this->_loadedOutboxes[$service->getName()]);
             }
         }
     }

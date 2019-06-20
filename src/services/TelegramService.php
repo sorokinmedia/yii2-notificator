@@ -21,9 +21,9 @@ class TelegramService extends BaseService
      * @return bool
      * @throws Exception
      */
-    public function send(BaseOutbox $baseOutbox): bool
+    public function send(BaseOutbox $baseOutbox, string $class): bool
     {
-        $outbox = AbstractOutboxTelegram::create();
+        $outbox = new $class;
         $recipients = $baseOutbox->recipients instanceof RecipientInterface ? $baseOutbox->recipients->getAccounts($baseOutbox->type_id) : $baseOutbox->recipients;
 
         if (!array_key_exists($this->getName(), $recipients)) {

@@ -19,7 +19,7 @@ interface ServiceInterface
      * @param BaseOutbox $baseOutbox
      * @return bool
      */
-    public function send(BaseOutbox $baseOutbox): bool;
+    public function send(BaseOutbox $baseOutbox, string $class): bool;
 
     /**
      * @param BaseOutbox $baseOutbox
