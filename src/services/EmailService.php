@@ -68,7 +68,7 @@ class EmailService extends BaseService
         $outbox = new $class;
         $recipients = $baseOutbox->recipients instanceof RecipientInterface ? $baseOutbox->recipients->getAccounts($baseOutbox->type_id) : $baseOutbox->recipients;
 
-        if (!array_key_exists($this->getName(), $recipients)) {
+        if (is_array($recipients) && !array_key_exists($this->getName(), $recipients)) {
             return true;
         }
 
