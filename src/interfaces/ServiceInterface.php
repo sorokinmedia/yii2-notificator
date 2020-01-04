@@ -31,7 +31,7 @@ interface ServiceInterface
      * @return bool
      */
     public function sendGroup(BaseOutbox $baseOutbox, string $class): bool;
-    
+
     /**
      * Включена ли групповая рассылка через данный сервис
      * @return bool

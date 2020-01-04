@@ -16,6 +16,11 @@ abstract class BaseService extends Component implements ServiceInterface
     public $viewPath;
 
     /**
+     * @return bool
+     */
+    abstract public function isGroup(): bool;
+
+    /**
      * @param BaseOutbox $baseOutbox
      * @return string
      */
@@ -23,9 +28,4 @@ abstract class BaseService extends Component implements ServiceInterface
     {
         return $this->viewPath . $this->getName() . '/' . $baseOutbox->view;
     }
-
-    /**
-     * @return bool
-     */
-    abstract public function isGroup(): bool;
 }

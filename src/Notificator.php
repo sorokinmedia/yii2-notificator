@@ -60,10 +60,10 @@ class Notificator extends Component
     public function sendGroup(HandlerInterface $handler): void
     {
         $outboxes = $handler->execute();
-        foreach ($this->_loadedServices as $service){
+        foreach ($this->_loadedServices as $service) {
             /** @var ServiceInterface $service */
-            if ($service->isGroup() === true){
-                foreach ($outboxes as $baseOutbox){
+            if ($service->isGroup() === true) {
+                foreach ($outboxes as $baseOutbox) {
                     $service->sendGroup($baseOutbox, $this->_loadedOutboxes[$service->getName()]);
                 }
             }
