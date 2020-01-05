@@ -64,12 +64,12 @@ class NotificationTypeForm extends Model
     public function attributeLabels(): array
     {
         return [
-            'name' => Yii::t('app', 'Название'),
-            'role' => Yii::t('app', 'Роль'),
-            'sms' => Yii::t('app', 'SMS'),
-            'email' => Yii::t('app', 'E-mail'),
-            'telegram' => Yii::t('app', 'Telegram'),
-            'in_site' => Yii::t('app', 'На сайте')
+            'name' => Yii::t('app-sm-notificator', 'Название'),
+            'role' => Yii::t('app-sm-notificator', 'Роль'),
+            'sms' => Yii::t('app-sm-notificator', 'SMS'),
+            'email' => Yii::t('app-sm-notificator', 'E-mail'),
+            'telegram' => Yii::t('app-sm-notificator', 'Telegram'),
+            'in_site' => Yii::t('app-sm-notificator', 'На сайте')
         ];
     }
 }

@@ -61,13 +61,13 @@ abstract class AbstractOutboxTelegram extends ActiveRecord implements RelationIn
     public function attributeLabels(): array
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'to_id' => Yii::t('app', 'Адресат'),
-            'to_chat' => Yii::t('app', 'ID чата'),
-            'body' => Yii::t('app', 'Текст сообщения'),
-            'sent_at' => Yii::t('app', 'Дата отправки'),
-            'template' => Yii::t('app', 'Шаблон'),
-            'created_at' => Yii::t('app', 'Дата создания')
+            'id' => Yii::t('app-sm-notificator', 'ID'),
+            'to_id' => Yii::t('app-sm-notificator', 'Адресат'),
+            'to_chat' => Yii::t('app-sm-notificator', 'ID чата'),
+            'body' => Yii::t('app-sm-notificator', 'Текст сообщения'),
+            'sent_at' => Yii::t('app-sm-notificator', 'Дата отправки'),
+            'template' => Yii::t('app-sm-notificator', 'Шаблон'),
+            'created_at' => Yii::t('app-sm-notificator', 'Дата создания')
         ];
     }
 

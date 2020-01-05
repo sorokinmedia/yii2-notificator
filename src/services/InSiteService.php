@@ -45,7 +45,7 @@ class InSiteService extends BaseService
         $outbox->type_id = $baseOutbox->type_id;
 
         if (!$outbox->save()) {
-            throw new Exception(Yii::t('app', 'Ошибка при сохранении в БД'));
+            throw new Exception(Yii::t('app-sm-notificator', 'Ошибка при сохранении в БД'));
         }
         return $outbox->sendOutbox();
     }

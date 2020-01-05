@@ -52,7 +52,7 @@ abstract class AbstractNotificationConfig extends ActiveRecord implements Relati
         ]);
         $user_notification->checkBeforeConfigSave();
         if (!$user_notification->save()) {
-            throw new Exception(Yii::t('app', 'Ошибка при добавлении настройки уведомления пользователю'));
+            throw new Exception(Yii::t('app-sm-notificator', 'Ошибка при добавлении настройки уведомления пользователю'));
         }
         return $user_notification;
     }
@@ -79,12 +79,12 @@ abstract class AbstractNotificationConfig extends ActiveRecord implements Relati
     public function attributeLabels(): array
     {
         return [
-            'user_id' => Yii::t('app', 'Пользователь'),
-            'type_id' => Yii::t('app', 'Тип уведомления'),
-            'sms' => Yii::t('app', 'SMS'),
-            'telegram' => Yii::t('app', 'Telegram'),
-            'email' => Yii::t('app', 'E-mail'),
-            'in_site' => Yii::t('app', 'На сайте'),
+            'user_id' => Yii::t('app-sm-notificator', 'Пользователь'),
+            'type_id' => Yii::t('app-sm-notificator', 'Тип уведомления'),
+            'sms' => Yii::t('app-sm-notificator', 'SMS'),
+            'telegram' => Yii::t('app-sm-notificator', 'Telegram'),
+            'email' => Yii::t('app-sm-notificator', 'E-mail'),
+            'in_site' => Yii::t('app-sm-notificator', 'На сайте'),
         ];
     }
 
@@ -113,7 +113,7 @@ abstract class AbstractNotificationConfig extends ActiveRecord implements Relati
         $this->sms = $sms;
         $this->telegram = $telegram;
         if (!$this->save()) {
-            throw new Exception(Yii::t('app', 'Ошибка при обновлении настроек уведомления'));
+            throw new Exception(Yii::t('app-sm-notificator', 'Ошибка при обновлении настроек уведомления'));
         }
         return true;
     }

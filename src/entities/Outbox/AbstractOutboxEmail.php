@@ -81,15 +81,15 @@ abstract class AbstractOutboxEmail extends ActiveRecord implements RelationInter
     public function attributeLabels(): array
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'to_id' => Yii::t('app', 'Адресат'),
-            'status_id' => Yii::t('app', 'Статус'),
-            'type_id' => Yii::t('app', 'Тип уведомления'),
-            'to_email' => Yii::t('app', 'E-mail'),
-            'subject' => Yii::t('app', 'Тема'),
-            'body' => Yii::t('app', 'Текст письма'),
-            'sent_at' => Yii::t('app', 'Дата отправки'),
-            'template' => Yii::t('app', 'Шаблон'),
+            'id' => Yii::t('app-sm-notificator', 'ID'),
+            'to_id' => Yii::t('app-sm-notificator', 'Адресат'),
+            'status_id' => Yii::t('app-sm-notificator', 'Статус'),
+            'type_id' => Yii::t('app-sm-notificator', 'Тип уведомления'),
+            'to_email' => Yii::t('app-sm-notificator', 'E-mail'),
+            'subject' => Yii::t('app-sm-notificator', 'Тема'),
+            'body' => Yii::t('app-sm-notificator', 'Текст письма'),
+            'sent_at' => Yii::t('app-sm-notificator', 'Дата отправки'),
+            'template' => Yii::t('app-sm-notificator', 'Шаблон'),
         ];
     }
 

@@ -64,14 +64,14 @@ abstract class AbstractOutboxInSite extends ActiveRecord implements RelationInte
     public function attributeLabels(): array
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'to_id' => Yii::t('app', 'Адресат'),
-            'type_id' => Yii::t('app', 'Тип'),
-            'to_email' => Yii::t('app', 'E-mail адрес'),
-            'body' => Yii::t('app', 'Тело письма'),
-            'is_viewed' => Yii::t('app', 'Просмотрено'),
-            'template' => Yii::t('app', 'Шаблон'),
-            'created_at' => Yii::t('app', 'Дата создания'),
+            'id' => Yii::t('app-sm-notificator', 'ID'),
+            'to_id' => Yii::t('app-sm-notificator', 'Адресат'),
+            'type_id' => Yii::t('app-sm-notificator', 'Тип'),
+            'to_email' => Yii::t('app-sm-notificator', 'E-mail адрес'),
+            'body' => Yii::t('app-sm-notificator', 'Тело письма'),
+            'is_viewed' => Yii::t('app-sm-notificator', 'Просмотрено'),
+            'template' => Yii::t('app-sm-notificator', 'Шаблон'),
+            'created_at' => Yii::t('app-sm-notificator', 'Дата создания'),
         ];
     }
 

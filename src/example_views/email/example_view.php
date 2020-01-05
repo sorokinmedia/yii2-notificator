@@ -4,7 +4,7 @@ use sorokinmedia\notificator\entities\Outbox\AbstractOutboxEmail;
 /** @var $this View */
 /** @var $outbox AbstractOutboxEmail */
 
-$outbox->subject = \Yii::t('app', 'Тема письма');
+$outbox->subject = \Yii::t('app-sm-notificator', 'Тема письма');
 
 ?>
     <h1><?= $outbox->subject ?></h1>

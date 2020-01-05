@@ -87,13 +87,13 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
     public function attributeLabels(): array
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Название'),
-            'role' => Yii::t('app', 'Роль'),
-            'sms' => Yii::t('app', 'SMS'),
-            'email' => Yii::t('app', 'E-mail'),
-            'telegram' => Yii::t('app', 'Telegram'),
-            'in_site' => Yii::t('app', 'На сайте')
+            'id' => Yii::t('app-sm-notificator', 'ID'),
+            'name' => Yii::t('app-sm-notificator', 'Название'),
+            'role' => Yii::t('app-sm-notificator', 'Роль'),
+            'sms' => Yii::t('app-sm-notificator', 'SMS'),
+            'email' => Yii::t('app-sm-notificator', 'E-mail'),
+            'telegram' => Yii::t('app-sm-notificator', 'Telegram'),
+            'in_site' => Yii::t('app-sm-notificator', 'На сайте')
         ];
     }
 
@@ -111,7 +111,7 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
     {
         $this->getFromForm();
         if (!$this->insert()) {
-            throw new Exception(Yii::t('app', 'Ошибка при добавлении нового типа уведомления в БД'));
+            throw new Exception(Yii::t('app-sm-notificator', 'Ошибка при добавлении нового типа уведомления в БД'));
         }
         $this->refresh();
         $this->afterInsertModel();
@@ -150,7 +150,7 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
         }
         $this->getFromForm();
         if (!$this->save()) {
-            throw new Exception(Yii::t('app', 'Ошибка при сохранении типа уведомления в БД'));
+            throw new Exception(Yii::t('app-sm-notificator', 'Ошибка при сохранении типа уведомления в БД'));
         }
         if ($role_update) { // если сменилась роль
             $this->afterRoleUpdate();
@@ -173,7 +173,7 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
     {
         $this->beforeDeleteModel();
         if (!$this->delete()) {
-            throw new Exception(Yii::t('app', 'Ошибка при удалении типа уведомления из БД'));
+            throw new Exception(Yii::t('app-sm-notificator', 'Ошибка при удалении типа уведомления из БД'));
         }
         return true;
     }

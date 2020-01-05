@@ -50,7 +50,7 @@ class EmailService extends BaseService
             $outbox->status_id = AbstractOutboxEmail::STATUS_GROUP;
         }
         if (!$outbox->save()) {
-            throw new Exception(Yii::t('app', 'Ошибка при сохранении в БД'));
+            throw new Exception(Yii::t('app-sm-notificator', 'Ошибка при сохранении в БД'));
         }
         if ($outbox->isImmediate()) {
             return $outbox->sendOutbox();

@@ -70,13 +70,13 @@ abstract class AbstractOutboxSms extends ActiveRecord implements RelationInterfa
     public function attributeLabels(): array
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'to_id' => Yii::t('app', 'Получатель'),
-            'status_id' => Yii::t('app', 'Статус'),
-            'phone' => Yii::t('app', 'Номер телефона'),
-            'body' => Yii::t('app', 'Текст сообщения'),
-            'sent_at' => Yii::t('app', 'Дата отправки'),
-            'created_at' => Yii::t('app', 'Дата создания')
+            'id' => Yii::t('app-sm-notificator', 'ID'),
+            'to_id' => Yii::t('app-sm-notificator', 'Получатель'),
+            'status_id' => Yii::t('app-sm-notificator', 'Статус'),
+            'phone' => Yii::t('app-sm-notificator', 'Номер телефона'),
+            'body' => Yii::t('app-sm-notificator', 'Текст сообщения'),
+            'sent_at' => Yii::t('app-sm-notificator', 'Дата отправки'),
+            'created_at' => Yii::t('app-sm-notificator', 'Дата создания')
         ];
     }
 
