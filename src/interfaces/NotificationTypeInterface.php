@@ -18,10 +18,10 @@ interface NotificationTypeInterface
 
     /**
      * найди все типы по роли
-     * @param string $role
+     * @param array|string $role
      * @return array
      */
-    public static function findByRole(string $role): array;
+    public static function findByRole($role): array;
 
     /**
      * передать данные из формы в сущность

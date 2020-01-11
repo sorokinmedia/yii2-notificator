@@ -47,10 +47,10 @@ abstract class AbstractNotificationType extends ActiveRecord implements Relation
 
     /**
      * получаем дефолтный набор для роли
-     * @param string $role
+     * @param array|string $role иногда может приходить массив ролей
      * @return array
      */
-    public static function findByRole(string $role): array
+    public static function findByRole($role): array
     {
         return static::find()->where(['role' => $role])->all();
     }
